@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF Converter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #282c34;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .navbar-nav .nav-item:not(:last-child) {
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #61dafb !important;
+        }
+
+        .hero-section {
+            background: url('https://images.unsplash.com/photo-1593642632559-0c56e2e810d8') no-repeat center center/cover;
+            color: #ffffff;
+            text-align: center;
+            padding: 160px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-section h1 {
+            font-size: 50px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 22px;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #61dafb, #0056b3);
+            color: #ffffff;
+            border-radius: 30px;
+            padding: 15px 35px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #4ba3e5, #003e7f);
+            color: #ffffff;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .converter-section {
+            padding: 80px 0;
+            background-color: #ffffff;
+            box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.05);
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            margin-top: -60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .converter-section h2 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #0056b3;
+        }
+
+        .form-control-file {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control-file:hover {
+            border-color: #0056b3;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .footer {
+            background-color: #282c34;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: #61dafb;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #61dafb;
+            color: #282c34;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .floating-action:hover {
+            background-color: #4ba3e5;
+        }
+
+        .form-group input[type="file"] {
+            cursor: pointer;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 32px;
+            }
+
+            .hero-section p {
+                font-size: 18px;
+            }
+
+            .btn-custom {
+                font-size: 16px;
+                padding: 12px 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">JPG to PDF Converter</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container fade-in">
+            <h1>Convert JPG to PDF Easily!</h1>
+            <p>Your one-stop solution for converting images to high-quality PDF files.</p>
+            <a href="converter-section" class="btn btn-custom">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Converter Section -->
+    <section class="converter-section" id="converter-section">
+        <div class="container">
+            <h2>Upload Your JPG Images</h2>
+            <form action="#" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="image-upload">Select JPG Images</label>
+                    <input type="file" class="form-control-file" id="image-upload" name="images[]" multiple>
+                </div>
+                <button type="submit" class="btn btn-custom">Convert to PDF</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 JPG to PDF Converter | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="floating-action">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

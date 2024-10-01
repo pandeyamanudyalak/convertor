@@ -8,62 +8,42 @@ from PIL import Image
 from io import BytesIO
 import os
 from django.conf import settings
-
-# def convert_to_pdf(request):
-#     if request.method == 'POST':
-#         form = ImageUploadForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             conversion = form.save()
-
-#             # Convert image to PDF
-#             image_path = conversion.image.path
-#             pdf_path = os.path.splitext(image_path)[0] + '.pdf'
-#             try:
-#                 # Open and convert image to PDF
-#                 image = Image.open(image_path)
-#                 pdf_image = image.convert('RGB')
-#                 pdf_image.save(pdf_path)
-                
-#                 # Update model instance with relative PDF file path
-#                 conversion.pdf_file.name = os.path.relpath(pdf_path, settings.MEDIA_ROOT)
-#                 conversion.save()
-#             except Exception as e:
-#                 print(f"Error converting image to PDF: {e}")
-#                 return HttpResponse("Error converting image to PDF.", status=500)
-
-#             return redirect('download', conversion.id)
-#     else:
-#         form = ImageUploadForm()
-#     return render(request, 'index.html', {'form': form})
+from django.core.files.storage import FileSystemStorage
+from docx import Document
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from io import BytesIO
 
 
 
-# from django.conf import settings
-# import os
 
-# def download_pdf(request, pk):
-#     try:
-#         conversion = Conversion.objects.get(pk=pk)
-#         print('\n ➡ 50 conversion:', conversion)
+def home(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            conversion = form.save(commit=False)
 
-#         if not conversion.pdf_file:
-#             return HttpResponse("PDF file not found.", status=404)
+            # Convert image to PDF
+            image_file = request.FILES['image']
+            image = Image.open(image_file)
 
-#         # Construct file path using MEDIA_ROOT
-#         file_path = os.path.join(settings.MEDIA_ROOT, conversion.pdf_file.name)
-#         print('\n ➡ 56 file_path:', file_path)
-        
-#         if not os.path.exists(file_path):
-#             print('-222222222222222222222222222222222-')
-#             return HttpResponse("File does not exist on the server.", status=404)
+            # Create a BytesIO object to hold the PDF data
+            pdf_bytes = BytesIO()
+            pdf_image = image.convert('RGB')
+            pdf_image.save(pdf_bytes, format='PDF')
+            pdf_bytes.seek(0)  # Rewind the BytesIO object to the beginning
 
-#         # Serve the file for download
-#         with open(file_path, 'rb') as pdf_file:
-#             response = HttpResponse(pdf_file.read(), content_type='application/pdf')
-#             response['Content-Disposition'] = f'attachment; filename="{os.path.basename(file_path)}"'
-#             return response
-#     except Conversion.DoesNotExist:
-#         return HttpResponse("Conversion record not found.", status=404)
+            # Set the PDF file name
+            pdf_filename = f"{os.path.splitext(image_file.name)[0]}.pdf"
+
+            # Return the PDF as an HttpResponse
+            response = HttpResponse(pdf_bytes.read(), content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="{pdf_filename}"'
+            return response
+
+    else:
+        form = ImageUploadForm()
+    return render(request, 'index.html', {'form': form})
 
 
 
@@ -94,3 +74,52 @@ def convert_to_pdf(request):
     else:
         form = ImageUploadForm()
     return render(request, 'index.html', {'form': form})
+
+
+
+
+
+
+
+def doc_to_pdf_view(request):
+    if request.method == 'POST' and request.FILES['doc_file']:
+        uploaded_file = request.FILES['doc_file']
+
+        try:
+            # Create an in-memory file for the PDF
+            pdf_buffer = BytesIO()
+            
+            # Convert DOCX to PDF
+            convert_docx_to_pdf(uploaded_file, pdf_buffer)
+
+            # Return the PDF as a response
+            pdf_buffer.seek(0)
+            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="converted_file.pdf"'
+            return response
+
+        except Exception as e:
+            return HttpResponse(f"Conversion failed: {str(e)}", status=500)
+
+    return render(request, 'dic_to_pdf.html')
+
+def convert_docx_to_pdf(input_file, pdf_buffer):
+    doc = Document(input_file)
+
+    pdf = canvas.Canvas(pdf_buffer, pagesize=letter)
+
+    width, height = letter
+    x, y = 72, height - 72  
+
+    for paragraph in doc.paragraphs:
+        text = paragraph.text
+        if y <= 72:  # Create a new page if we reach the bottom of the page
+            pdf.showPage()
+            y = height - 72 
+
+        pdf.drawString(x, y, text)
+        y -= 15  # Adjust line height
+
+    pdf.save()
+
+

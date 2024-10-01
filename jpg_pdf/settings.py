@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0qz&czrwejp!(9d)gf8+d_psxx2k#k2^+hg1^j4vbhmq2o&sic'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['13.233.208.185']
 ALLOWED_HOSTS = ['ofconverter.org', 'www.ofconverter.org', 'localhost', '127.0.0.1','13.235.51.152']

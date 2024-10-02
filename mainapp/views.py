@@ -161,3 +161,56 @@ def convert_pptx_to_pdf(input_file, pdf_buffer):
         pdf.showPage()
 
     pdf.save()
+
+
+
+
+import io
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import openpyxl
+
+def excel_to_pdf_view(request):
+    if request.method == 'POST' and request.FILES['excel_file']:
+        uploaded_file = request.FILES['excel_file']
+
+        try:
+            # Create a BytesIO object to hold the PDF in memory
+            pdf_buffer = io.BytesIO()
+
+            # Convert Excel to PDF (write to pdf_buffer instead of saving to a file)
+            convert_excel_to_pdf(uploaded_file, pdf_buffer)
+
+            # Get the PDF content and prepare the response
+            pdf_buffer.seek(0)
+            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="converted_excel.pdf"'
+            return response
+
+        except Exception as e:
+            return HttpResponse(f"Conversion failed: {str(e)}", status=500)
+
+    return render(request, 'excel_to_pdf.html')
+
+def convert_excel_to_pdf(input_file, pdf_buffer):
+    wb = openpyxl.load_workbook(input_file)
+    ws = wb.active
+
+    # Create a new PDF file in the BytesIO buffer
+    pdf = canvas.Canvas(pdf_buffer, pagesize=letter)
+    width, height = letter
+    x, y = 50, height - 50
+
+    # Loop through rows and columns and write the data to the PDF
+    for row in ws.iter_rows(values_only=True):
+        row_text = ' | '.join([str(cell) if cell is not None else '' for cell in row])
+        
+        if y <= 50:  # Create a new page if we reach the bottom
+            pdf.showPage()
+            y = height - 50
+        
+        pdf.drawString(x, y, row_text)
+        y -= 15  # Move to the next line
+
+    pdf.save()  # Finalize the PDF

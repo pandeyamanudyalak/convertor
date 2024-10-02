@@ -12,7 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from docx import Document
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
-from io import BytesIO
+from pptx import Presentation
 
 
 
@@ -123,3 +123,41 @@ def convert_docx_to_pdf(input_file, pdf_buffer):
     pdf.save()
 
 
+
+
+
+
+def ppt_to_pdf_view(request):
+    if request.method == 'POST' and request.FILES['ppt_file']:
+        uploaded_file = request.FILES['ppt_file']
+
+        try:
+            pdf_buffer = BytesIO()
+            convert_pptx_to_pdf(uploaded_file, pdf_buffer)
+            
+            pdf_buffer.seek(0)
+            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="converted_ppt.pdf"'
+            return response
+
+        except Exception as e:
+            return HttpResponse(f"Conversion failed: {str(e)}", status=500)
+
+    return render(request, 'ppt_to_pdf.html')
+
+def convert_pptx_to_pdf(input_file, pdf_buffer):
+    prs = Presentation(input_file)
+    pdf = canvas.Canvas(pdf_buffer, pagesize=letter)
+    width, height = letter
+
+    for slide in prs.slides:
+        y = height - 50
+        for shape in slide.shapes:
+            if hasattr(shape, "text"):
+                text = shape.text
+                pdf.drawString(72, y, text)
+                y -= 20
+
+        pdf.showPage()
+
+    pdf.save()

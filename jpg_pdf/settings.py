@@ -126,25 +126,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# settings.py
-STATIC_URL = 'static/'
 
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# settings.py
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 
-# Media Setting
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
-# STATICFILES_DIRS = [
-#     "/home/ubuntu/project/convertor/static",
-# ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -155,3 +141,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 X_FRAME_OPTIONS = 'ALLOWALL'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
+
+
+STATIC_URL = '/static/'  # URL to access static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'your_app_name', 'static'),  # Add your app's static directory here if you have one
+]
+
+# Media files (User uploaded files)
+MEDIA_URL = '/media/'  # URL to access media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 

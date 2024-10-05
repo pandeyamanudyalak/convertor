@@ -214,3 +214,134 @@ def convert_excel_to_pdf(input_file, pdf_buffer):
         y -= 15  # Move to the next line
 
     pdf.save()  # Finalize the PDF
+
+
+
+import os
+from django.shortcuts import render
+from django.http import HttpResponse
+from xhtml2pdf import pisa
+
+def html_to_pdf_view(request):
+    if request.method == 'POST' and request.FILES['html_file']:
+        uploaded_file = request.FILES['html_file']
+        html_content = uploaded_file.read().decode('utf-8')  # Read and decode the uploaded file
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="converted.pdf"'
+        pisa_status = pisa.CreatePDF(html_content, dest=response)
+
+        if pisa_status.err:
+            return HttpResponse('Error rendering PDF', status=400)
+        return response
+
+    return render(request, 'html_to_pdf.html')
+
+
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.core.files.storage import FileSystemStorage
+from PyPDF2 import PdfFileReader, PdfFileWriter
+import io
+
+
+
+# def upload_pdf(request):
+#     if request.method == 'POST' and request.FILES['pdf_file']:
+#         pdf_file = request.FILES['pdf_file']
+#         fs = FileSystemStorage()
+#         filename = fs.save(pdf_file.name, pdf_file)
+#         uploaded_file_url = fs.url(filename)
+#         return render(request, 'edit_pdf.html', {'pdf_url': uploaded_file_url, 'pdf_name': pdf_file.name})
+#     return render(request, 'upload_pdf.html')
+
+# def edit_pdf(request):
+#     if request.method == 'POST' and request.FILES['pdf_file']:
+#         pdf_file = request.FILES['pdf_file']
+#         fs = FileSystemStorage()
+#         filename = fs.save(pdf_file.name, pdf_file)
+
+#         # Here, we're assuming you're editing the PDF. For now, this just sends the file back unchanged.
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename="edited_{pdf_file.name}"'
+        
+#         # Send back the original file without modifications (you can change this to edit the file)
+#         with open(fs.path(filename), 'rb') as pdf:
+#             response.write(pdf.read())
+#         return response
+#     return render(request, 'edit_pdf.html')
+
+def download_pdf(request, pk):
+    pdf_file = get_object_or_404(PdfFile, pk=pk)
+    response = HttpResponse(pdf_file.pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{pdf_file.name}"'
+    return response
+
+
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+import os
+
+from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+
+
+# def edit_pdf(request):
+#     print('\n ➡ 296 request:', request)
+#     if request.method == 'POST' and request.FILES.get('pdf_file'):
+#         pdf_file = request.FILES['pdf_file']
+#         fs = FileSystemStorage()
+#         filename = fs.save(pdf_file.name, pdf_file)
+
+#         # URL where the PDF is stored
+#         pdf_url = fs.url(filename)
+#         print('\n ➡ 303 pdf_url:', pdf_url)
+    
+#         pdf_url = "http://127.0.0.1:8000" + pdf_url
+#         # print('\n ➡ 306 pdf_url:', pdf_url)
+        
+#         return render(request, 'edit_pdf.html', {'pdf_url': pdf_url, 'pdf_name': filename})
+
+#         # For now, send the original file back unchanged
+#         response = HttpResponse(content_type='application/pdf')
+#         response['Content-Disposition'] = f'attachment; filename="edited_{pdf_file.name}"'
+        
+
+#         with open(fs.path(filename), 'rb') as pdf:
+#             response.write(pdf.read())
+#         return response
+    
+    # Initial page load - No file yet, so no PDF URL
+    # return render(request, 'edit_pdf.html', {'pdf_url': None, 'pdf_name': None})
+
+
+
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
+from django.shortcuts import render
+from PyPDF2 import PdfFileReader, PdfFileWriter
+import os
+
+def edit_pdf(request):
+    if request.method == 'POST' and request.FILES.get('pdf_file'):
+        # When the user uploads a PDF
+        pdf_file = request.FILES['pdf_file']
+        fs = FileSystemStorage()
+        filename = fs.save(pdf_file.name, pdf_file)
+
+        # URL where the PDF is stored
+        pdf_url = fs.url(filename)
+        pdf_path = fs.path(filename)
+
+        # Send back the rendered page with the PDF embedded
+        return render(request, 'edit_pdf.html', {'pdf_url': pdf_url, 'pdf_name': pdf_file.name})
+
+    elif request.method == 'GET':
+        # Initial GET request, no PDF yet, just render the form
+        return render(request, 'upload_pdf.html')

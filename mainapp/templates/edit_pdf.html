@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert your DOC files to PDF easily and quickly with our online converter tool.">
+    <meta name="keywords" content="DOC to PDF, online converter, free converter, DOC to PDF converter">
+    <meta name="author" content="Your Name">
+    <title>Free Online PDF Editor - Soft Convert</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    {% load static %}
+    <script src="{% static 'lib/webviewer.min.js' %}"></script>
+    <script src="{% static 'lib/PDFNet.js' %}"></script>
+    <style>
+        /* Custom styles remain unchanged */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #ffffff !important;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .navbar-nav .nav-item:not(:last-child) {
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffc107 !important;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0056b3, #007bff);
+            color: #ffffff;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-section h1 {
+            font-size: 48px;
+            font-weight: 700;
+            text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section p {
+            font-size: 20px;
+            font-weight: 300;
+            margin: 20px 0 40px;
+        }
+
+        .btn-custom {
+            background-color: #ffc107;
+            color: #0056b3;
+            border-radius: 30px;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-custom:hover {
+            background-color: #e0b72e;
+            color: #ffffff;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .converter-section {
+            padding: 60px 0;
+            background-color: #ffffff;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.05);
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .converter-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: #0056b3;
+        }
+
+        .form-control-file {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control-file:hover {
+            border-color: #0056b3;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .floating-action:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group input[type="file"] {
+            cursor: pointer;
+        }
+        #download-pdf {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: #0056b3;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #download-pdf:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #download-pdf:hover:not(:disabled) {
+            background-color: #e0b72e;
+            color: #ffffff;
+        }
+        #viewer {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Soft Converter</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#converter">PDF Editor</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- <section class="hero-section">
+        <div class="container">
+            <h1>Edit Your PDF Easily</h1>
+            <p>Upload your PDF files and edit in no time!</p>
+            <a href="#converter" class="btn btn-custom mt-4">Start Editing</a>
+        </div>
+    </section> -->
+
+    <!-- Converter Section -->
+    <section id="converter" class="converter-section mt-2" style="display: none;">
+        <div class="container">
+            <h2>Edit Your PDF Easily</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <form id="upload-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="pdf-file">Upload PDF File</label>
+                                <input type="file" class="form-control-file" id="pdf-file" name="pdf_file" accept="application/pdf" required>
+                                <small class="form-text text-muted">Supported format: PDF.</small>
+                            </div>
+                            <button type="submit" class="btn btn-custom btn-block" id="upload-button">Upload PDF</button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="viewer"></div>
+    
+    <!-- Download Button -->
+    <button id="download-pdf" disabled>Download Edited PDF</button>
+
+    <script>
+        WebViewer({
+            path: '/static/lib',  
+            licenseKey: '20d4106fa94df21b2d897a83ae',  
+        }, document.getElementById('viewer')).then(instance => {
+            const { UI, Core } = instance;
+            const { documentViewer, annotationManager } = Core;
+
+            documentViewer.addEventListener('documentLoaded', () => {
+                console.log('Document loaded');
+                document.getElementById('download-pdf').disabled = false; 
+                documentViewer.zoomTo(1.0);
+
+                UI.enableFeatures([UI.Feature.TextSelect]);
+
+                UI.enableFeatures([UI.Feature.Annotations]);  
+                UI.setToolbarGroup(UI.ToolbarGroup.Annotate); 
+            });
+
+            const pdfUrl = "{{ pdf_url }}";
+            if (pdfUrl) {
+                UI.loadDocument(pdfUrl);  
+            }
+
+            document.getElementById('upload-form').onsubmit = function(event) {
+                event.preventDefault(); 
+                const fileInput = document.getElementById('pdf-file');
+                const file = fileInput.files[0];
+
+                if (!file) {
+                    alert('Please select a PDF file to upload.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    UI.loadDocument(arrayBuffer)
+                        .then(() => {
+                            console.log('Document loaded successfully');
+                            document.getElementById('download-pdf').disabled = false;
+                            documentViewer.zoomTo(1.0); 
+                            UI.setToolMode(UI.Tools.ToolMode.ContentEdit);
+                        })
+                        .catch(err => {
+                            console.error('Error loading document:', err);
+                            alert('There was an error loading the document. Please try again.');
+                        });
+                };
+
+                reader.onerror = function() {
+                    console.error('Error reading file:', reader.error);
+                    alert('There was an error reading the file. Please try again.');
+                };
+
+                reader.readAsArrayBuffer(file);
+            };
+
+            document.getElementById('download-pdf').onclick = async function () {
+                const doc = documentViewer.getDocument();
+
+                const xfdfString = await annotationManager.exportAnnotations();
+
+                const data = await doc.getFileData({
+                    xfdfString,  
+                    flatten: true 
+                });
+
+                const blob = new Blob([new Uint8Array(data)], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'edited_document.pdf'; 
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+
+            if (typeof instance.UI.enableFeatures === 'function') {
+                UI.enableFeatures([UI.Feature.TextSelect, UI.Feature.Annotations, UI.Feature.ContentEdit]);
+                console.log('Text editing and annotations enabled.');
+            } else {
+                console.error('Text editing or annotation features are not available.');
+            }
+        }).catch(error => {
+            console.error('Error initializing WebViewer:', error);
+        });
+
+    </script>
+    
+    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Soft Converter. All Rights Reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

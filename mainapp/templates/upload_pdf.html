@@ -4,22 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Convert your DOC files to PDF easily and quickly with our online converter tool.">
-    <meta name="keywords" content="DOC to PDF, online converter, free converter, DOC to PDF converter">
-    <meta name="author" content="Your Name">
+    <meta name="description" content="Convert your DOC and PDF files easily and quickly with our free online PDF editor and converter. Edit PDFs and convert DOC files to PDF hassle-free.">
+    <meta name="keywords" content="PDF editor, DOC to PDF, online converter, free PDF editor, PDF to DOC converter, edit PDFs online">
+    <meta name="author" content="Soft Converter">
     <title>Free Online PDF Editor - Soft Convert</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-
     <style>
-        /* Custom styles remain unchanged */
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f4f7f6;
+            color: #333;
             margin: 0;
             padding: 0;
-            color: #333;
         }
 
         .navbar {
@@ -47,7 +45,6 @@
             color: #ffffff;
             padding: 120px 0;
             text-align: center;
-            position: relative;
         }
 
         .hero-section h1 {
@@ -58,7 +55,6 @@
 
         .hero-section p {
             font-size: 20px;
-            font-weight: 300;
             margin: 20px 0 40px;
         }
 
@@ -69,20 +65,18 @@
             padding: 12px 30px;
             font-size: 18px;
             font-weight: 600;
-            transition: all 0.3s;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
         }
 
         .btn-custom:hover {
             background-color: #e0b72e;
             color: #ffffff;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .converter-section {
             padding: 60px 0;
             background-color: #ffffff;
-            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.05);
             border-top-left-radius: 40px;
             border-top-right-radius: 40px;
             margin-top: -50px;
@@ -97,23 +91,19 @@
             color: #0056b3;
         }
 
-        .form-control-file {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            transition: border-color 0.3s;
-        }
-
-        .form-control-file:hover {
-            border-color: #0056b3;
-        }
-
         .card {
             border: none;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             overflow: hidden;
+        }
+
+        .form-group input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .footer {
@@ -156,9 +146,6 @@
             background-color: #0056b3;
         }
 
-        .form-group input[type="file"] {
-            cursor: pointer;
-        }
         #download-pdf {
             display: block;
             margin: 20px auto;
@@ -182,6 +169,7 @@
             background-color: #e0b72e;
             color: #ffffff;
         }
+
         #viewer {
             width: 100%;
             height: 600px;
@@ -192,7 +180,7 @@
 </head>
 
 <body>
-    <!-- Header -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Soft Converter</a>
@@ -209,61 +197,21 @@
             </div>
         </div>
     </nav>
-<!-- 
-    <section class="intro-section">
-    <div class="container">
-        <p>Welcome to Soft Convert, your go-to free online PDF editor. With our tool, you can easily upload your PDF files, make changes, and download the updated files. Whether you need to correct a typo, add annotations, or rearrange pages, Soft Convert allows you to do it all quickly and effortlessly. No need to download or install any software – everything is done online in just a few clicks.</p>
-    </div>
-</section> -->
-
 
     <!-- Hero Section -->
-    <!-- <section class="hero-section">
-        <div class="container">
-            <h1>Edit Your PDF Easily</h1>
-            <p>Upload your PDF files and edit in no time!</p>
-            <a href="#converter" class="btn btn-custom mt-4">Start Editing</a>
-        </div>
-    </section> -->
-<!-- 
     <section class="hero-section">
         <div class="container">
             <h1>Free Online PDF Editor</h1>
-            <p>Soft Convert offers a simple, fast, and free way to edit your PDF files online. Upload your document, make edits, and download your file in no time!</p>
+            <p>Edit your PDF files with ease and download them instantly!</p>
             <a href="#converter" class="btn btn-custom mt-4">Start Editing for Free</a>
         </div>
-    </section> -->
-    
-
-
-    
+    </section>
 
     <!-- Converter Section -->
-    <!-- <section id="converter" class="converter-section mt-2">
-        <div class="container">
-            <h2>Edit Your PDF Easily</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card p-4">
-                        <form id="upload-form" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="pdf-file">Upload PDF File</label>
-                                <input type="file" class="form-control-file" id="pdf-file" name="pdf_file" accept="application/pdf" required>
-                                <small class="form-text text-muted">Supported format: PDF.</small>
-                            </div>
-                            <button type="submit" class="btn btn-custom btn-block" id="upload-button">Upload PDF</button>
-                        </form>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
     <section id="converter" class="converter-section mt-2">
         <div class="container">
             <h2>Edit Your PDF Easily with Our Free Online PDF Editor</h2>
-            <p>Soft Convert is designed to be the best free online PDF editor, allowing you to make quick edits and download your files without hassle.</p>
+            <p>Soft Convert offers a fast and efficient way to edit your PDF files online. Upload your document, make changes, and download the updated file hassle-free!</p>
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="card p-4">
@@ -282,25 +230,24 @@
         </div>
     </section>
 
+    <!-- About Section -->
     <section class="about-section py-5">
         <div class="container">
             <h2>About Soft Convert</h2>
-            <p>Soft Convert is designed to simplify the process of PDF editing. Our free online tool allows you to upload your PDF document, make the necessary changes, and download the modified file. Whether you’re editing text, adding images, or annotating, our user-friendly editor ensures a smooth experience from start to finish.</p>
+            <p>Soft Convert simplifies the PDF editing process. Our free online tool allows you to upload your PDF, make necessary changes, and download the updated file—all with ease and without installation.</p>
         </div>
     </section>
-    
 
     <!-- Features Section -->
     <section class="features-section py-5">
         <div class="container">
             <h2>Why Choose Our PDF Editor?</h2>
-            <p>With our free online PDF editor, you can:</p>
             <ul>
-                <li>Upload and edit PDF files without any installation.</li>
-                <li>Edit Your ODF easily.</li>
-                <li>Make edits securely—your files are processed safely.</li>
-                <li>Enjoy fast and efficient conversion and editing services.</li>
-                <li>Use the tool for free with no hidden charges.</li>
+                <li>Upload and edit PDFs online without any installation.</li>
+                <li>Make secure edits—your files are processed safely and deleted after use.</li>
+                <li>Quick and efficient PDF editing.</li>
+                <li>Free to use with no hidden charges.</li>
+                <li>Mobile-friendly—edit PDFs on the go.</li>
             </ul>
         </div>
     </section>
@@ -311,39 +258,28 @@
             <h2>Frequently Asked Questions</h2>
             <div class="faq-item">
                 <h5>Is the PDF editor tool free to use?</h5>
-                <p>Yes, our online PDF editor is completely free to use. You can edit your PDFs and download them without any cost.</p>
+                <p>Yes, Soft Convert offers a completely free PDF editing service. No registration or payment is required.</p>
             </div>
             <div class="faq-item">
-                <h5>Is it safe to upload my files?</h5>
-                <p>We take your privacy seriously. All files uploaded to our platform are processed securely and deleted after your session ends.</p>
-            </div>
-            <div class="faq-item">
-                <h5>Can I convert DOC files to PDF?</h5>
-                <p>Yes, you can easily convert your DOC files to PDF format using our converter tool. Simply upload your DOC file and select the conversion option.</p>
-            </div>
-            <div class="faq-item">
-                <h5>Is it safe to upload my PDF files?</h5>
-                <p>We take your privacy seriously. All uploaded files are processed securely, and we do not store any of your data. Your files are deleted from our servers after the conversion process.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h5>Can I use this tool on mobile devices?</h5>
-                <p>Yes, our PDF editor is mobile-friendly and works seamlessly across smartphones, tablets, and desktop devices, ensuring you can edit PDF files on the go.</p>
+                <h5>How secure is my data?</h5>
+                <p>Your uploaded files are kept secure and are deleted after processing. We prioritize your privacy and security.</p>
             </div>
         </div>
     </section>
-    
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Soft Converter. All Rights Reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-        </div>
+        <p>&copy; 2024 Soft Converter. All Rights Reserved.</p>
     </footer>
 
+    <!-- Floating Action Button -->
+    <div class="floating-action" title="Upload PDF">
+        <i class="fas fa-upload"></i>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 

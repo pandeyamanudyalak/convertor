@@ -140,14 +140,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520  # 20 MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2097152000000  # 20 MB
 
 
 
 STATIC_URL = '/static/'  # URL to access static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'your_app_name', 'static'),  # Add your app's static directory here if you have one
+    os.path.join(BASE_DIR, 'mainapp', 'static'),  # Add your app's static directory here if you have one
 ]
 
 # Media files (User uploaded files)

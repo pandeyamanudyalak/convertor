@@ -11,6 +11,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
+
     <style>
         /* Custom styles remain unchanged */
         body {
@@ -208,6 +209,13 @@
             </div>
         </div>
     </nav>
+<!-- 
+    <section class="intro-section">
+    <div class="container">
+        <p>Welcome to Soft Convert, your go-to free online PDF editor. With our tool, you can easily upload your PDF files, make changes, and download the updated files. Whether you need to correct a typo, add annotations, or rearrange pages, Soft Convert allows you to do it all quickly and effortlessly. No need to download or install any software – everything is done online in just a few clicks.</p>
+    </div>
+</section> -->
+
 
     <!-- Hero Section -->
     <!-- <section class="hero-section">
@@ -217,9 +225,21 @@
             <a href="#converter" class="btn btn-custom mt-4">Start Editing</a>
         </div>
     </section> -->
+<!-- 
+    <section class="hero-section">
+        <div class="container">
+            <h1>Free Online PDF Editor</h1>
+            <p>Soft Convert offers a simple, fast, and free way to edit your PDF files online. Upload your document, make edits, and download your file in no time!</p>
+            <a href="#converter" class="btn btn-custom mt-4">Start Editing for Free</a>
+        </div>
+    </section> -->
+    
+
+
+    
 
     <!-- Converter Section -->
-    <section id="converter" class="converter-section mt-2">
+    <!-- <section id="converter" class="converter-section mt-2">
         <div class="container">
             <h2>Edit Your PDF Easily</h2>
             <div class="row justify-content-center">
@@ -237,6 +257,78 @@
                         
                     </div>
                 </div>
+            </div>
+        </div>
+    </section> -->
+    <section id="converter" class="converter-section mt-2">
+        <div class="container">
+            <h2>Edit Your PDF Easily with Our Free Online PDF Editor</h2>
+            <p>Soft Convert is designed to be the best free online PDF editor, allowing you to make quick edits and download your files without hassle.</p>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card p-4">
+                        <form id="upload-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="pdf-file">Upload PDF File</label>
+                                <input type="file" class="form-control-file" id="pdf-file" name="pdf_file" accept="application/pdf" required>
+                                <small class="form-text text-muted">Supported format: PDF.</small>
+                            </div>
+                            <button type="submit" class="btn btn-custom btn-block" id="upload-button">Upload and Edit PDF</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section py-5">
+        <div class="container">
+            <h2>About Soft Convert</h2>
+            <p>Soft Convert is designed to simplify the process of PDF editing. Our free online tool allows you to upload your PDF document, make the necessary changes, and download the modified file. Whether you’re editing text, adding images, or annotating, our user-friendly editor ensures a smooth experience from start to finish.</p>
+        </div>
+    </section>
+    
+
+    <!-- Features Section -->
+    <section class="features-section py-5">
+        <div class="container">
+            <h2>Why Choose Our PDF Editor?</h2>
+            <p>With our free online PDF editor, you can:</p>
+            <ul>
+                <li>Upload and edit PDF files without any installation.</li>
+                <li>Edit Your ODF easily.</li>
+                <li>Make edits securely—your files are processed safely.</li>
+                <li>Enjoy fast and efficient conversion and editing services.</li>
+                <li>Use the tool for free with no hidden charges.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section py-5 bg-light">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h5>Is the PDF editor tool free to use?</h5>
+                <p>Yes, our online PDF editor is completely free to use. You can edit your PDFs and download them without any cost.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Is it safe to upload my files?</h5>
+                <p>We take your privacy seriously. All files uploaded to our platform are processed securely and deleted after your session ends.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Can I convert DOC files to PDF?</h5>
+                <p>Yes, you can easily convert your DOC files to PDF format using our converter tool. Simply upload your DOC file and select the conversion option.</p>
+            </div>
+            <div class="faq-item">
+                <h5>Is it safe to upload my PDF files?</h5>
+                <p>We take your privacy seriously. All uploaded files are processed securely, and we do not store any of your data. Your files are deleted from our servers after the conversion process.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h5>Can I use this tool on mobile devices?</h5>
+                <p>Yes, our PDF editor is mobile-friendly and works seamlessly across smartphones, tablets, and desktop devices, ensuring you can edit PDF files on the go.</p>
             </div>
         </div>
     </section>
